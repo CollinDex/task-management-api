@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+@Controller('/probe')
+export default class ProbeController {
+  @Get('/')
+  public test() {
+    return { status_code: 200, message: 'I am the NestJs api responding' };
+  }
+}
 
-@ApiTags('Home')
+/* @ApiTags('Home')
 @Controller('/home')
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -20,4 +20,4 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-}
+} */

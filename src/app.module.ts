@@ -2,16 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { LoggerModule } from 'nestjs-pino';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import ProbeController from './probe.controller';
 import mikroOrmConfig from './database/data-source';
+import HealthController from './health.controller';
+import { TasksModule } from './modules/task/task.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Makes ConfigService available globally
+      isGlobal: true,
     }),
-    MikroOrmModule.forRoot(mikroOrmConfig), // Auto-loads MikroORM configuration
+    MikroOrmModule.forRoot(mikroOrmConfig),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
@@ -20,8 +21,8 @@ import mikroOrmConfig from './database/data-source';
         },
       },
     }),
+    TasksModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [ProbeController, HealthController],
 })
 export class AppModule {}
