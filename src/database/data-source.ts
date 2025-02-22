@@ -7,13 +7,14 @@ dotenv.config();
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const mikroOrmConfig: Options<MySqlDriver> = {
-  driver: MySqlDriver, // Use the correct driver
+  driver: MySqlDriver,
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   dbName: process.env.DB_NAME,
-  entities: [process.env.DB_ENTITIES],
+  entities: ['./dist/**/*.entity.js'],
+  entitiesTs: ['./src/**/*.entity.ts'],
   migrations: {
     path: process.env.DB_MIGRATIONS || 'migrations',
     tableName: 'migrations',
