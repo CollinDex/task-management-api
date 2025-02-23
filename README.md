@@ -1,73 +1,102 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Task Management API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+The **Task Management API** is a RESTful API built using **NestJS** to manage tasks. It provides functionalities to create, retrieve, update, and delete tasks. This API also includes additional enhancements such as health checks, improved validation, and Swagger documentation for easy integration.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
+- **Create a Task:** Add a new task with a description and status.
+- **Retrieve All Tasks:** Fetch all tasks with optional query filtering by status.
+- **Update a Task:** Modify a task's status (e.g., mark as completed or active).
+- **Delete a Task:** Remove a task from the database.
+- **Health Check Endpoint:** Check the API's health status and retrieve the server's IP address.
+- **Swagger API Documentation:** Auto-generated documentation for easy API exploration.
 
-## Description
+## Enhancements
+- **Status Enum Validation:** Ensures that a task's status can only be `pending`, `completed`, or `active`.
+- **DTO (Data Transfer Object) Implementation:** Uses DTOs for request validation and data integrity.
+- **Middleware for Logging:** Basic request logging for debugging and monitoring.
+- **Improved Error Handling:** Returns structured error responses for invalid inputs.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
+- **NestJS**
+- **Swagger (OpenAPI)**
+- **Class-validator & Class-transformer**
+- **MikroORM**
+- **Node.js**
+- **MySQL**
 
 ## Installation
+### Prerequisites
+- **Node.js** (>= 16.x)
+- **npm** or **yarn** installed
+- **MySQL**
 
+### Steps
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/CollinDex/task-management-api.git
+   cd task-management-api
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Set up environment variables:**
+   Create a `.env` file in the root directory and configure your database connection and other settings just as done in the .env.example file
+   ```env
+   NODE_ENV=development
+   PORT=3000
+   DB_TYPE=mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASS=password
+   DB_NAME=task
+   DB_ENTITIES=dist/src/modules/**/entities/**/*.entity{.ts,.js}
+   DB_MIGRATIONS=dist/db/migrations/*{.ts,.js}
+   DB_SSL=false
+   ```
+4. **Run database migrations:**
+   ```bash
+   npm run migration:run
+   ```
+5. **Start the development server:**
+   ```bash
+   npm run start:dev
+   ```
+
+## API Endpoints
+### Task Endpoints
+| Method | Endpoint        | Description |
+|--------|----------------|-------------|
+| `POST` | `/api/v1/tasks` | Create a new task |
+| `GET`  | `/api/v1/tasks` | Retrieve all tasks (with optional status filtering) |
+| `PATCH`| `/api/v1/tasks/:id` | Update a task's status |
+| `DELETE`| `/api/v1/tasks/:id` | Delete a task |
+
+### Health Check Endpoint
+| Method | Endpoint  | Description |
+|--------|----------|-------------|
+| `GET`  | `/health` | Check API health status |
+
+## Running Tests
+To run unit tests:
 ```bash
-$ yarn install
+npm run test
+```
+To run end-to-end (E2E) tests:
+```bash
+npm run test:e2e
 ```
 
-## Running the app
-
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+## Swagger API Documentation
+Swagger documentation is available at:
 ```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+http://localhost:3000/api/docs
 ```
+It provides an interactive UI for testing API endpoints.
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Assumptions
+- The task status can only be `pending`, `completed`, or `active`.
+- All endpoints follow RESTful conventions.
+- The API follows a modular structure with controllers, services, and DTOs.

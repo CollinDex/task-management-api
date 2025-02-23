@@ -1,6 +1,6 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskStatus } from 'src/modules/task/enums/task.enum';
+import { TaskStatus } from '../enums/task.enum';
 
 @Entity()
 export class Task {
