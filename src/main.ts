@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { initializeDataSource } from './database/data-source';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,6 +23,7 @@ async function bootstrap() {
 
   app.useLogger(logger);
   app.enableCors();
+  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api/v1', {
     exclude: ['/', 'health', 'api', 'api/v1', 'api/docs', 'probe'],
   });
