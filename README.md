@@ -20,7 +20,6 @@ The **Task Management API** is a RESTful API built using **NestJS** to manage ta
 ## Technologies Used
 - **NestJS**
 - **Swagger (OpenAPI)**
-- **Class-validator & Class-transformer**
 - **MikroORM**
 - **Node.js**
 - **MySQL**
@@ -39,7 +38,7 @@ The **Task Management API** is a RESTful API built using **NestJS** to manage ta
    ```
 2. **Install dependencies:**
    ```bash
-   npm install
+   yarn install
    ```
 3. **Set up environment variables:**
    Create a `.env` file in the root directory and configure your database connection and other settings just as done in the .env.example file
@@ -56,15 +55,10 @@ The **Task Management API** is a RESTful API built using **NestJS** to manage ta
    DB_MIGRATIONS=dist/db/migrations/*{.ts,.js}
    DB_SSL=false
    ```
-4. **Run database migrations:**
+4. **Start the development server:**
    ```bash
-   npm run migration:run
+   yarn run start:dev
    ```
-5. **Start the development server:**
-   ```bash
-   npm run start:dev
-   ```
-
 ## API Endpoints
 ### Task Endpoints
 | Method | Endpoint        | Description |
@@ -78,16 +72,6 @@ The **Task Management API** is a RESTful API built using **NestJS** to manage ta
 | Method | Endpoint  | Description |
 |--------|----------|-------------|
 | `GET`  | `/health` | Check API health status |
-
-## Running Tests
-To run unit tests:
-```bash
-npm run test
-```
-To run end-to-end (E2E) tests:
-```bash
-npm run test:e2e
-```
 
 ## Swagger API Documentation
 Swagger documentation is available at:
