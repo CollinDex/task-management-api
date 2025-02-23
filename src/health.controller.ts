@@ -1,33 +1,34 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import * as os from 'os';
+
+class HealthResponse {
+  @ApiProperty({ example: '200', description: 'status_code' })
+  status_code: 200;
+
+  @ApiProperty({
+    example: 'message',
+    description: 'This is a healthy api',
+  })
+  message: 'This is a healthy api';
+
+  @ApiProperty({
+    example: '192.168.137.1',
+    description: 'localIpAddress',
+  })
+  ip: 'localIpAddress';
+}
 
 @ApiTags('Health Check')
 @Controller()
 export default class HealthController {
-  @Get('/')
-  public home() {
-    return { status_code: 200, message: 'Welcome to NestJs Backend Endpoint' };
-  }
-
-  @Get('api')
-  public api() {
-    return { status_code: 200, message: 'Welcome to NestJs Backend Endpoint' };
-  }
-
-  @Get('api/v1')
-  public v1() {
-    return {
-      status_code: 200,
-      message: 'Welcome to version 1 of NestJS Backend Endpoint',
-    };
-  }
-
   @Get('health')
   @ApiOperation({ summary: 'Get api health status' })
   @ApiResponse({
     status: 200,
-    description: 'This is a healthy endpoint',
+    description: 'Health Check Successful',
+    type: HealthResponse,
   })
   public health() {
     const networkInterfaces = os.networkInterfaces();
@@ -47,7 +48,7 @@ export default class HealthController {
 
     return {
       status_code: 200,
-      message: 'This is a healthy endpoint',
+      message: 'This is a healthy api',
       ip: localIpAddress,
     };
   }

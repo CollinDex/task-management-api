@@ -30,7 +30,7 @@ export class TaskService {
       });
       await this.em.flush();
       const responseData = {
-        message: 'Successfully created task',
+        message: 'Task created successfully',
         data: task,
       };
       return responseData;
@@ -47,7 +47,7 @@ export class TaskService {
     try {
       const filters = status ? { status } : {};
       const task = await this.taskRepository.find(filters);
-      if (!task) {
+      if (task.length === 0) {
         throw new NotFoundException('Task not found');
       }
       const responseData = {
@@ -101,7 +101,7 @@ export class TaskService {
       if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
       await this.em.removeAndFlush(task);
       const responseData = {
-        message: 'Profile successfully deleted',
+        message: 'Task successfully deleted',
       };
       return responseData;
     } catch (error) {

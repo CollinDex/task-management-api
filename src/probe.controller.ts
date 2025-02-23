@@ -1,23 +1,23 @@
 import { Controller, Get } from '@nestjs/common';
-@Controller('/probe')
+import { ApiExcludeController } from '@nestjs/swagger';
+@ApiExcludeController()
+@Controller()
 export default class ProbeController {
   @Get('/')
-  public test() {
-    return { status_code: 200, message: 'I am the NestJs api responding' };
+  public home() {
+    return { status_code: 200, message: 'Welcome to NestJs Backend Endpoint' };
+  }
+
+  @Get('api')
+  public api() {
+    return { status_code: 200, message: 'Welcome to NestJs Backend Endpoint' };
+  }
+
+  @Get('api/v1')
+  public v1() {
+    return {
+      status_code: 200,
+      message: 'Welcome to version 1 of NestJS Backend Endpoint',
+    };
   }
 }
-
-/* @ApiTags('Home')
-@Controller('/home')
-export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @ApiBearerAuth()
-  @Get()
-  @ApiOperation({ summary: 'Get all tasks' })
-  @ApiResponse({ status: 200, description: 'Successfully retrieved tasks.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
-  getHello(): string {
-    return this.appService.getHello();
-  }
-} */

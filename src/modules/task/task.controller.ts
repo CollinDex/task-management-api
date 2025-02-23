@@ -29,6 +29,8 @@ export class TaskController {
     description: 'Task created successfully',
     type: Task,
   })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Post()
   createTask(@Body() createTaskDto: CreateTaskDto) {
     return this.tasksService.createTask(createTaskDto);
@@ -43,9 +45,12 @@ export class TaskController {
   })
   @ApiResponse({
     status: 200,
-    description: 'List of tasks',
-    type: [Task], // Ensure Swagger knows the return type
+    description: 'Task fetched Successfully',
+    type: [Task],
   })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Get()
   getTasks(@Query('status') status?: TaskStatus) {
     return this.tasksService.getTasks(status);
@@ -53,13 +58,19 @@ export class TaskController {
 
   @ApiOperation({ summary: 'Update task status' })
   @ApiResponse({ status: 200, description: 'Task status updated', type: Task })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Patch(':id')
   updateTask(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.updateTask(id, updateTaskDto);
   }
 
   @ApiOperation({ summary: 'Delete a task' })
-  @ApiResponse({ status: 200, description: 'Task deleted successfully' })
+  @ApiResponse({ status: 200, description: 'Task successfully deleted' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Delete(':id')
   deleteTask(@Param('id') id: number) {
     return this.tasksService.deleteTask(id);
