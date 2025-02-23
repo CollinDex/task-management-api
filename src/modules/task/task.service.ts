@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { EntityRepository } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Task } from './entities/task.entitiy';
@@ -15,32 +20,100 @@ export class TaskService {
     private readonly em: EntityManager,
   ) {}
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    const task = this.taskRepository.create({
-      ...createTaskDto,
-      status: TaskStatus.PENDING,
-    });
-    await this.em.flush();
-    return task;
+  async createTask(
+    createTaskDto: CreateTaskDto,
+  ): Promise<{ message: string; data: Task }> {
+    try {
+      const task = this.taskRepository.create({
+        ...createTaskDto,
+        status: TaskStatus.PENDING,
+      });
+      await this.em.flush();
+      const responseData = {
+        message: 'Successfully created task',
+        data: task,
+      };
+      return responseData;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Internal server error: ${error.message}`,
+      );
+    }
   }
 
-  async getTasks(status?: TaskStatus): Promise<Task[]> {
-    const filters = status ? { status } : {};
-    return this.taskRepository.find(filters);
+  async getTasks(
+    status?: TaskStatus,
+  ): Promise<{ message: string; data: Task[] }> {
+    try {
+      const filters = status ? { status } : {};
+      const task = await this.taskRepository.find(filters);
+      if (!task) {
+        throw new NotFoundException('Task not found');
+      }
+      const responseData = {
+        message: 'Task fetched Successfully',
+        data: task,
+      };
+      return responseData;
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Internal server error: ${error.message}`,
+      );
+    }
   }
 
-  async updateTask(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const task = await this.taskRepository.findOne(id);
-    if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
-    task.status = updateTaskDto.status;
-    await this.em.flush();
-    return task;
+  async updateTask(
+    id: number,
+    updateTaskDto: UpdateTaskDto,
+  ): Promise<{ message: string; data: Task }> {
+    try {
+      const task = await this.taskRepository.findOne(id);
+      if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
+      task.status = updateTaskDto.status;
+      await this.em.flush();
+      const responseData = {
+        message: 'Task status successfully updated',
+        data: task,
+      };
+      return responseData;
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Internal server error: ${error.message}`,
+      );
+    }
   }
 
-  async deleteTask(id: number): Promise<void> {
-    const task = await this.taskRepository.findOne(id);
-    if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
-
-    await this.em.removeAndFlush(task);
+  async deleteTask(id: number): Promise<{ message: string }> {
+    try {
+      const task = await this.taskRepository.findOne(id);
+      if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
+      await this.em.removeAndFlush(task);
+      const responseData = {
+        message: 'Profile successfully deleted',
+      };
+      return responseData;
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Internal server error: ${error.message}`,
+      );
+    }
   }
 }
