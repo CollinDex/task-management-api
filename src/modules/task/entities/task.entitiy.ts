@@ -1,12 +1,13 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskStatus } from '../enums/task.enum';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class Task {
   @ApiProperty({ example: 1, description: 'Task ID' })
-  @PrimaryKey()
-  id!: number;
+  @PrimaryKey({ type: 'uuid' })
+  id: string = uuidv4();
 
   @ApiProperty({
     example: 'Run Tests',

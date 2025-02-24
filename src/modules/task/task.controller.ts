@@ -62,7 +62,7 @@ export class TaskController {
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Patch(':id')
-  updateTask(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
+  updateTask(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.updateTask(id, updateTaskDto);
   }
 
@@ -72,7 +72,7 @@ export class TaskController {
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error.' })
   @Delete(':id')
-  deleteTask(@Param('id') id: number) {
+  deleteTask(@Param('id') id: string) {
     return this.tasksService.deleteTask(id);
   }
 }

@@ -69,11 +69,11 @@ export class TaskService {
   }
 
   async updateTask(
-    id: number,
+    id: string,
     updateTaskDto: UpdateTaskDto,
   ): Promise<{ message: string; data: Task }> {
     try {
-      const task = await this.taskRepository.findOne(id);
+      const task = await this.taskRepository.findOne({ id });
       if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
       task.status = updateTaskDto.status;
       await this.em.flush();
@@ -95,9 +95,9 @@ export class TaskService {
     }
   }
 
-  async deleteTask(id: number): Promise<{ message: string }> {
+  async deleteTask(id: string): Promise<{ message: string }> {
     try {
-      const task = await this.taskRepository.findOne(id);
+      const task = await this.taskRepository.findOne({ id });
       if (!task) throw new NotFoundException(`Task with ID ${id} not found`);
       await this.em.removeAndFlush(task);
       const responseData = {
